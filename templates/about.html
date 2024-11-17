@@ -1,0 +1,72 @@
+{% include "header.html" %}
+
+    <!-- Page Header Start -->
+    <div class="container-fluid bg-dark bg-img p-5 mb-5">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="display-4 text-uppercase text-white">About Us</h1>
+            </div>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+    <!-- About Start -->
+    <div class="container-fluid pt-5">
+        {% if error_msg %}
+            <h2 style="color:red;text-align:center">An error has occurred.</h2>
+            <h5 style="color:red;text-align:center">{{ error_msg }}</h5>
+        {% else %}
+            <div class="row gx-5">
+                <div class="col-lg-5 mb-5 mb-lg-0" style="min-height: 600px;">
+                    <div class="position-relative h-100">
+                        <img class="position-absolute w-100 h-100" src="static/img/about.jpg" style="object-fit: cover;">
+                    </div>
+                </div>
+                <div class="col-lg-6 pb-5">
+                  <table style="width: 80%; margin-left:auto; margin-right:auto">
+                      <tr>
+                          <td>
+                              <h2 class="text-primary font-secondary">
+                                Below is how this website was built:
+                              </h2>
+                          </td>
+                      </tr>
+                  </table>
+                  <br>
+                  <table style="width: 80%; margin-left:auto; margin-right:auto">
+                    <colgroup>
+                      <col span="1" style="width: 70%;">
+                      <col span="1" style="width: 30%;">
+                    </colgroup>
+                    <tr style="vertical-align: top; border-bottom: 1pt solid black; font-size: 14pt; font-weight:bold">
+                        <th><h5 style="font-weight:bold">Technologies</h5></th>
+                        <th><h5 style="font-weight:bold">Links</h5></th>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: top; border-bottom: 1pt solid black"><h5 style="font-weight:normal">Python as the main application platform</h5></td>
+                        <td style="vertical-align: top; border-bottom: 1pt solid black"><h5 style="font-weight:normal"><a href="https://www.python.org/" rel="noopener">Python</a></h5></td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: top; border-bottom: 1pt solid black"><h5 style="font-weight:normal">HTML and CSS (with Bootstrap) for website design.  Special thanks to HTML Codex for the website template on which this site was based.</h5></td>
+                        <td style="vertical-align: top; border-bottom: 1pt solid black"><h5 style="font-weight:normal"><a href="https://www.w3schools.com/html/" rel="noopener">HTML,</a><a href="https://www.w3schools.com/css/" rel="noopener">CSS, </a><a href="https://getbootstrap.com/" rel="noopener">Bootstrap, </a><a href="https://htmlcodex.com/" rel="noopener">HTML Codex</a></h5></td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: top; border-bottom: 1pt solid black"><h5 style="font-weight:normal">Jinja for processing Python code inside of HTML</h5></td>
+                        <td style="vertical-align: top; border-bottom: 1pt solid black"><h5 style="font-weight:normal"><a href="https://jinja.palletsprojects.com/" rel="noopener">Jinja</a></h5></td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: top; border-bottom: 1pt solid black"><h5 style="font-weight:normal">Flask for website deployment</h5></td>
+                        <td style="vertical-align: top; border-bottom: 1pt solid black"><h5 style="font-weight:normal"><a href="https://flask.palletsprojects.com/" rel="noopener">Flask</a></h5></td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align: top; border-bottom: 1pt solid black"><h5 style="font-weight:normal">SQLite and SQLAlchemy for database support</h5></td>
+                        <td style="vertical-align: top; border-bottom: 1pt solid black"><h5 style="font-weight:normal"><a href="https://www.sqlite.org/" rel="noopener">SQLite, </a><a href="https://www.sqlalchemy.org/" rel="noopener">SQLAlchemy</a></h5></td>
+                    </tr>
+                  </table>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <!-- About End -->
+
+{% include "footer.html" %}

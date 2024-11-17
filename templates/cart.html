@@ -1,0 +1,113 @@
+{% include "header.html" %}
+{% from 'bootstrap5/form.html' import render_form %} <!-- INTRODUCES BOOTSTRAP-FLASK TO THE MIX -->
+
+    <!-- Page Header Start -->
+    <div class="container-fluid bg-dark bg-img p-5 mb-5">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="display-4 text-uppercase text-white">My Cart</h1>
+            </div>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+    <!-- Main Content Start -->
+    {% if success %}
+        <div class="container position-relative text-left mx-auto mb-5 pb-0" style="max-width: 1200px;">
+            <div class="row justify-content-center">
+                <table style="text-align:center; max-width: 60%">
+                    <tr>
+                        <td >
+                            {% if cart_details_count > 0 %}
+                                <a title="Checkout" style="color:black" href="{{ url_for('checkout') }}"><img style="height: 50px; width: 50px" src="static/img/checkout.jpg"></a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </table>
+                <br><br><br>
+                <h3 style="color:red; text-align:center">Items In Cart ({{ cart_details_count }})</h3>
+                <table style="width: 100%; text-align:left; margin-left:auto; margin-right:auto">
+                  <colgroup>
+                      <col span="1" style="width: 5%;">
+                      <col span="1" style="width: 5%;">
+                      <col span="1" style="width: 2%;">
+                      <col span="1" style="width: 38%;">
+                      <col span="1" style="width: 0%;">
+                      <col span="1" style="width: 15%;">
+                      <col span="1" style="width: 10%;">
+                      <col span="1" style="width: 12%;">
+                      <col span="1" style="width: 1%;">
+                      <col span="1" style="width: 12%;">
+                  </colgroup>
+                  <tr style="border-bottom:1pt solid black">
+                    <th style="font-size: 1rem;color:red; text-align:center;font-weight:bold">Edit</th>
+                    <th style="font-size: 1rem;color:red; text-align:center;font-weight:bold">Delete</th>
+                    <th style="font-size: 1rem"></th>
+                    <th style="font-size: 1rem;font-weight:bold">Product Ordered</th>
+                    <th style="font-size: 1rem"></th>
+                    <th style="font-size: 1rem;font-weight:bold;text-align:right">Qty.</th>
+                    <th style="font-size: 1rem;font-weight:bold;text-align:center">UOM</th>
+                    <th style="font-size: 1rem;font-weight:bold;text-align:right">Unit Price</th>
+                    <th style="font-size: 1rem;font-weight:bold;text-align:right"> </th>
+                    <th style="font-size: 1rem;font-weight:bold;text-align:right">Total Amt.</th>
+                  </tr>
+                  {% for detail in cart_details %}
+                      <tr style="border-bottom:1pt solid black">
+                        <td style="font-size: 0rem; text-align:center"><a href="{{ url_for('edit_cart_detail', cart_detail_id=detail.cart_detail_id, product_id=detail.product_id) }}"><img src="{{ url_for('static', filename='img/edit.ico') }}" title="Edit this item" width="30rem" height="30rem"></a></td>
+                        <td style="font-size: 0rem; text-align:center"><a href="{{ url_for('delete_cart_detail', cart_detail_id=detail.cart_detail_id) }}"><img src="{{ url_for('static', filename='img/delete.ico') }}" title="Delete this item" width="30rem" height="30rem"></a></td>
+                        <td style="font-size: 0rem">{{ detail.cart_detail_id }}</td>
+                        <td><img class="img-fluid" src="static/product_images/{{ detail.product_image }}" alt="" style="width: 80px; height: 50px;"> {{ detail.product_name }}</td>
+                        <td style="font-size: 1rem"></td>
+                        <td style="font-size: 1rem; text-align:right">{{ detail.qty_ordered }}</td>
+                        <td style="font-size: 1rem; text-align:center">{{ detail.uom_name }}</td>
+                        <td style="font-size: 1rem; text-align:right">{{ '${0:.2f}'.format(detail.unit_price) }}</td>
+                        {% if detail.unit_price_updated == True %}
+                            <td style="font-size: 1rem; text-align:left">*</td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                        <td style="font-size: 1rem; text-align:right">{{ '${0:.2f}'.format(detail.sales_amt) }}</td>
+                      </tr>
+                  {% endfor %}
+                </table>
+                <h2></h2>
+                <p style="text-align:center;font-weight:bold;font-size: 1rem"><i>* = Price has been updated since item was added to cart.</i></p>
+                <h2></h2>
+                <h3 style="color:red; text-align:center">Cart Totals:</h3>
+                <table style="width: 60%; text-align:left; margin-left:auto; margin-right:auto">
+                  <colgroup>
+                      <col span="1" style="width: 25%;">
+                      <col span="1" style="width: 25%;">
+                      <col span="1" style="width: 25%;">
+                      <col span="1" style="width: 25%;">
+                  </colgroup>
+                  <tr style="border-bottom:1pt solid black">
+                    <th style="font-size: 1rem;text-align:center;font-weight:bold">Total Sale</th>
+                    <th style="font-size: 1rem;text-align:center;font-weight:bold">Tax</th>
+                    <th style="font-size: 1rem;text-align:center;font-weight:bold">Shipping</th>
+                    <th style="font-size: 1rem;text-align:center;font-weight:bold">Grand Total</th>
+                  </tr>
+                  <tr style="border-bottom:1pt solid black">
+
+                    <td style="text-align:center;font-weight:bold;font-size: 1.25rem">{{ '${0:.2f}'.format(sum_sales_amt) }}</td>
+                    <td style="text-align:center;font-weight:bold;font-size: 1.25rem">{{ '${0:.2f}'.format(sum_tax_amt) }}</td>
+                    <td style="text-align:center;font-weight:bold;font-size: 1.25rem">{{ '${0:.2f}'.format(sum_ship_amt) }}</td>
+                    <td style="text-align:center;font-weight:bold;font-size: 1.25rem">{{ '${0:.2f}'.format(sum_total_amt) }}</td>
+                  </tr>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <div class="container position-relative text-center mx-auto mb-5 pb-0" style="margin-top: 10px; max-width: 600px;">
+            {% if error_msg %}
+                <h4 style="color:red;text-align:center">An error has occurred:</h4>
+                <h5 style="color:red;text-align:center">{{ error_msg }}</h5>
+            {% else %}
+                <h4 style="color:red;text-align:center">No cart details were retrieved.</h4>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <!-- Main Content End -->
+
+{% include "footer.html" %}

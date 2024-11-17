@@ -1,0 +1,64 @@
+{% include "header.html" %}
+{% from 'bootstrap5/form.html' import render_form %} <!-- INTRODUCES BOOTSTRAP-FLASK TO THE MIX -->
+
+    <!-- Page Header Start -->
+    <div class="container-fluid bg-dark bg-img p-5 mb-5">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="display-4 text-uppercase text-white">Units of Measure</h1>
+            </div>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+    <!-- Main Content Start -->
+    {% if success %}
+        <div class="container position-relative text-left mx-auto mb-5 pb-0" style="max-width: 800px;">
+            <div class="row justify-content-center">
+                <h2 style="color:red; text-align:center">Existing Units of Measure ({{ uom_count }})</h2>
+                <h5></h5>
+                <a style="text-align:center;font-weight:bold;font-size: 1.25rem" href="{{ url_for('add_uom') }}">Add Unit of Measure</a>
+                <h5></h5>
+                <table style="width: 100%; text-align:left; margin-left:auto; margin-right:auto">
+                  <colgroup>
+                      <col span="1" style="width: 8%;">
+                      <col span="1" style="width: 8%;">
+                      <col span="1" style="width: 0%;">
+                      <col span="1" style="width: 28%;">
+                      <col span="1" style="width: 48%;">
+                  </colgroup>
+                  <tr style="border-bottom:1pt solid black">
+                    <th style="font-size: 1rem;color:red; text-align:center;font-weight:bold">Edit</th>
+                    <th style="font-size: 1rem;color:red; text-align:center;font-weight:bold">Delete</th>
+                    <th style="font-size: 1rem"></th>
+                    <th style="font-size: 1rem;font-weight:bold">Code</th>
+                    <th style="font-size: 1rem;font-weight:bold">Description</th>
+                  </tr>
+                  {% for uom in uoms %}
+                      <tr style="border-bottom:1pt solid black">
+                        <td style="font-size: 0rem; text-align:center"><a href="{{ url_for('edit_uom', uom_id=uom.uom_id) }}"><img src="{{ url_for('static', filename='img/edit.ico') }}" title="Edit this UOM" width="30rem" height="30rem"></a></td>
+                        <td style="font-size: 0rem; text-align:center"><a href="{{ url_for('delete_uom', uom_id=uom.uom_id) }}"><img src="{{ url_for('static', filename='img/delete.ico') }}" title="Delete this UOM" width="30rem" height="30rem"></a></td>
+                        <td style="font-size: 0rem">{{ uom.uom_id }}</td>
+                        <td style="font-size: 1rem">{{ uom.code }}</td>
+                        <td style="font-size: 1rem">{{ uom.description }}</td>
+                      </tr>
+                  {% endfor %}
+                </table>
+                <h2></h2>
+                <a style="text-align:center;font-weight:bold;font-size: 1.25rem" href="{{ url_for('add_uom') }}">Add Unit of Measure</a>
+            </div>
+        </div>
+    {% else %}
+        <div class="container position-relative text-center mx-auto mb-5 pb-0" style="margin-top: 10px; max-width: 600px;">
+            {% if error_msg %}
+                <h4 style="color:red;text-align:center">An error has occurred:</h4>
+                <h5 style="color:red;text-align:center">{{ error_msg }}</h5>
+            {% else %}
+                <h4 style="color:red;text-align:center">No UOM records were retrieved.</h4>
+            {% endif %}
+        </div>
+    {% endif %}
+    <!-- Main Content End -->
+
+
+{% include "footer.html" %}

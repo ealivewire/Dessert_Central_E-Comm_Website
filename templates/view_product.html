@@ -1,0 +1,83 @@
+{% include "header.html" %}
+{% from 'bootstrap5/form.html' import render_form %} <!-- INTRODUCES BOOTSTRAP-FLASK TO THE MIX -->
+
+    <!-- Page Header Start -->
+    <div class="container-fluid bg-dark bg-img p-5 mb-5">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="display-4 text-uppercase text-white">Add to Cart</h1>
+            </div>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+    <!-- Main Content Start -->
+    {% if msg_status or error_msg %}
+        <div class="container-fluid pt-5 text-center">
+            {% if error_msg %}
+                <h2 style="color:red;text-align:center">An error has occurred.</h2>
+                <h5 style="color:red;text-align:center">{{ error_msg }}</h5>
+                <a style="text-align:center;font-weight:bold;font-size: 1.25rem" href="{{ url_for('home') }}">Return to Home page</a>
+            {% endif %}
+            {% if msg_status %}
+                <h2 style="color:red;text-align:center">{{ msg_status }}</h2>
+                {% if successful_cart_update %}
+                    <a style="text-align:center;font-weight:bold;font-size: 1.25rem" href="{{ url_for('cart') }}">Return to Cart</a>
+                {% else %}
+                    <a style="text-align:center;font-weight:bold;font-size: 1.25rem" href="{{ url_for('home') }}">Return to Home page</a>
+                {% endif %}
+            {% endif %}
+    {% else %}
+        <div class="row gx-5">
+            <div class="col-lg-5 mb-5 mb-lg-0" style="min-height:400px">
+                <div class="position-relative h-100">
+                    <img class="img-fluid w-100 h-100" src="static/product_images/{{product[0].product_image}}" style="object-fit: cover;">
+                </div>
+            </div>
+            <div class="col-lg-6 pb-5">
+                <h4 class="mb-4">{{product[0].name}}</h4>
+                <p class="mb-5">{{product[0].description}}</p>
+                <table style="width: 100%; text-align:left; vertical-align:top; margin-left:auto; margin-right:auto">
+                    <colgroup>
+                      <col span="1" style="width: 20%;">
+                      <col span="1" style="width: 5%;">
+                      <col span="1" style="width: 10%;">
+                      <col span="1" style="width: 0%;">
+                      <col span="1" style="width: 0%;">
+                    </colgroup>
+                    <tr>
+                        <td style="vertical-align:top;">
+                            {% if product[0]["unit_price_discounted"] != None %}
+                                <h4 class="bg-dark text-primary p-2 m-0"><p style="font-size:14px">Discounted Price</p>{{ '${0:.2f}'.format(product[0]["unit_price_discounted"]) }}<p style="font-size:12px">/{{ product[0]["uom_name"]}}</p></h4>
+                            {% else %}
+                                <h4 class="bg-dark text-primary p-2 m-0"><p style="font-size:14px">Price</p>{{ '${0:.2f}'.format(product[0]["unit_price_regular"]) }}<p style="font-size:12px">/{{ product[0]["uom_name"]}}</p></h4>
+                            {% endif %}
+                        </td>
+                        <td></td>
+                        <td style="vertical-align:top;">
+                            <h5 style="color:black; text-align:left">{{ render_form(form) }}</h5>
+                        </td>
+                        <td></td>
+                    </tr>
+                </table>
+                <table style="width: 100%; text-align:left; margin-left:auto; margin-right:auto">
+                    <colgroup>
+                      <col span="1" style="width: 100%;">
+                    </colgroup>
+                    <tr>
+                        <td>
+                        {% if successful_cart_update %}
+                            <a style="text-align:left;font-weight:bold;font-size: 1.25rem" href="{{ url_for('cart') }}">Return to Cart</a>
+                        {% else %}
+                            <a style="text-align:left;font-weight:bold;font-size: 1.25rem" href="{{ url_for('home') }}">Return to Home page</a>
+                        {% endif %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    {% endif %}
+    </div>
+    <!-- Main Content End -->
+
+{% include "footer.html" %}

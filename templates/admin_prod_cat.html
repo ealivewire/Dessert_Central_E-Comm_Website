@@ -1,0 +1,63 @@
+{% include "header.html" %}
+{% from 'bootstrap5/form.html' import render_form %} <!-- INTRODUCES BOOTSTRAP-FLASK TO THE MIX -->
+
+    <!-- Page Header Start -->
+    <div class="container-fluid bg-dark bg-img p-5 mb-5">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="display-4 text-uppercase text-white">Product Categories</h1>
+            </div>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+    <!-- Main Content Start -->
+    {% if msg_status or error_msg or record_to_delete %}
+        <div class="container position-relative text-center mx-auto mb-5 pb-0" style="margin-top: 10px; max-width: 600px;">
+            {% if error_msg %}
+                <h2 style="color:red;text-align:center">An error has occurred.</h2>
+                <h5 style="color:red;text-align:center">{{ error_msg }}</h5>
+                <a style="text-align:center;font-weight:bold;font-size: 1.25rem" href="{{ url_for('product_categories') }}">Return to Product Categories page</a>
+            {% endif %}
+            {% if record_to_delete %}
+                <h2 style="color:red; text-align:center">{{ trans_type }} the following product category?:</h2>
+                <table style="width: 100%; text-align:left; margin-left:auto; margin-right:auto">
+                  <colgroup>
+                      <col span="1" style="width: 28%;">
+                      <col span="1" style="width: 48%;">
+                  </colgroup>
+                  <tr style="border-bottom:1pt solid black">
+                    <th style="font-size: 1rem;font-weight:bold">Name</th>
+                    <th style="font-size: 1rem;font-weight:bold">Description</th>
+                  </tr>
+                  <tr style="border-bottom:1pt solid black">
+                    <td style="font-size: 1rem">{{ record_to_delete.name }}</td>
+                    <td style="font-size: 1rem">{{ record_to_delete.description }}</td>
+                  </tr>
+                </table>
+                <a style="text-align:center;font-weight:bold;font-size: 1.25rem" href="{{ url_for('delete_prod_cat_result', prod_cat_id=record_to_delete.category_id) }}">Delete</a>
+                <br>
+                <a style="text-align:center;font-weight:bold;font-size: 1.25rem" href="{{ url_for('product_categories') }}">Cancel</a>
+            {% endif %}
+            {% if msg_status %}
+                <h2 style="color:red;text-align:center">{{ msg_status }}</h2>
+                <a style="text-align:center;font-weight:bold;font-size: 1.25rem" href="{{ url_for('product_categories') }}">Return to Product Categories page</a>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="container position-relative text-center mx-auto mb-5 pb-0" style="max-width: 600px;">
+            <div class="row justify-content-center">
+                <h2 style="color:red; text-align:center">{{ trans_type }} product category below:</h2>
+                <div class="col-lg-6">
+                    <div class="row g-3">
+                        <h5 style="color:black; text-align:left">{{ render_form(form) }}</h5>
+                        <a style="text-align:center;font-weight:bold;font-size: 1.25rem" href="{{ url_for('product_categories') }}">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Main Content End -->
+
+{% include "footer.html" %}

@@ -1,0 +1,117 @@
+{% include "header.html" %}
+{% from 'bootstrap5/form.html' import render_form %} <!-- INTRODUCES BOOTSTRAP-FLASK TO THE MIX -->
+
+    <!-- Page Header Start -->
+    <div class="container-fluid bg-dark bg-img p-5 mb-5">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="display-4 text-uppercase text-white">View Order</h1>
+            </div>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+    <!-- Main Content Start -->
+    {% if success %}
+        <div class="container position-relative text-left mx-auto mb-5 pb-0" style="max-width: 1200px;">
+            <div class="row justify-content-center">
+                <h2 style="color:red; text-align:center">Order ID: {{ order.order_id }}</h2>
+                <h5></h5>
+                <h4 style="color:red; text-align:center">Product(s) Ordered ({{ order_details_count }})</h4>
+                <h5></h5>
+                <table style="width: 60%; text-align:left; margin-left:auto; margin-right:auto">
+                  <colgroup>
+                      <col span="1" style="width: 35%;">
+                      <col span="1" style="width: 10%;">
+                      <col span="1" style="width: 15%;">
+                      <col span="1" style="width: 20%;">
+                      <col span="1" style="width: 20%;">
+                  </colgroup>
+                  <tr style="border-bottom:1pt solid black">
+                    <th style="font-size: 1rem;font-weight:bold">Product</th>
+                    <th style="font-size: 1rem;font-weight:bold;text-align:right">Qty.</th>
+                    <th style="font-size: 1rem;font-weight:bold;text-align:center">UOM</th>
+                    <th style="font-size: 1rem;font-weight:bold;text-align:right">Unit Price</th>
+                    <th style="font-size: 1rem;font-weight:bold;text-align:right">Total Amt.</th>
+                  </tr>
+                  {% for detail in order_details %}
+                      <tr style="border-bottom:1pt solid black">
+                        <td>{{ detail.product_name }}</td>
+                        <td style="font-size: 1rem; text-align:right">{{ detail.qty_ordered }}</td>
+                        <td style="font-size: 1rem; text-align:center">{{ detail.uom_name }}</td>
+                        <td style="font-size: 1rem; text-align:right">{{ '${0:.2f}'.format(detail.unit_price) }}</td>
+                        <td style="font-size: 1rem; text-align:right">{{ '${0:.2f}'.format(detail.sales_amt) }}</td>
+                      </tr>
+                  {% endfor %}
+                </table>
+                <h2></h2>
+                <h2></h2>
+                <h4 style="color:red; text-align:center">Order Totals:</h4>
+                <table style="width: 60%; text-align:left; margin-left:auto; margin-right:auto">
+                  <colgroup>
+                      <col span="1" style="width: 25%;">
+                      <col span="1" style="width: 25%;">
+                      <col span="1" style="width: 25%;">
+                      <col span="1" style="width: 25%;">
+                  </colgroup>
+                  <tr style="border-bottom:1pt solid black">
+                    <th style="font-size: 1rem;text-align:center;font-weight:bold">Total Sale</th>
+                    <th style="font-size: 1rem;text-align:center;font-weight:bold">Tax</th>
+                    <th style="font-size: 1rem;text-align:center;font-weight:bold">Shipping</th>
+                    <th style="font-size: 1rem;text-align:center;font-weight:bold">Grand Total</th>
+                  </tr>
+                  <tr style="border-bottom:1pt solid black">
+                    <td style="text-align:center;font-weight:normal;font-size: 1rem">{{ '${0:.2f}'.format(order["sales_amt"]) }}</td>
+                    <td style="text-align:center;font-weight:normal;font-size: 1rem">{{ '${0:.2f}'.format(order["tax_amt"]) }}</td>
+                    <td style="text-align:center;font-weight:normal;font-size: 1rem">{{ '${0:.2f}'.format(order["ship_amt"]) }}</td>
+                    <td style="text-align:center;font-weight:bold;font-size: 1rem">{{ '${0:.2f}'.format(order["total_amt"]) }}</td>
+                  </tr>
+                </table>
+                <h2></h2>
+                <h2></h2>
+                <h4 style="color:red; text-align:center">Order Processing Details:</h4>
+                <table style="width: 60%; text-align:left; margin-left:auto; margin-right:auto">
+                  <colgroup>
+                      <col span="1" style="width: 20%;">
+                      <col span="1" style="width: 20%;">
+                      <col span="1" style="width: 20%;">
+                      <col span="1" style="width: 20%;">
+                      <col span="1" style="width: 20%;">
+                  </colgroup>
+                  <tr style="border-bottom:1pt solid black">
+                    <th style="font-size: 1rem;text-align:center;font-weight:bold">Date Ordered</th>
+                    <th style="font-size: 1rem;text-align:center;font-weight:bold">Date Paid</th>
+                    <th style="font-size: 1rem;text-align:center;font-weight:bold">Date Shipped</th>
+                    <th style="font-size: 1rem;text-align:center;font-weight:bold">Ordered By</th>
+                    <th style="font-size: 1rem;text-align:center;font-weight:bold">Username</th>
+                  </tr>
+                  <tr style="border-bottom:1pt solid black">
+                    <td style="text-align:center;font-size: 1rem">{% if order.date_ordered %}{{order.date_ordered.strftime('%Y-%m-%d')}}{% else %}Not Ordered{% endif %}</td>
+                    <td style="text-align:center;font-size: 1rem">{% if order.date_paid %}{{order.date_paid.strftime('%Y-%m-%d')}}{% else %}Not paid{% endif %}</td>
+                    <td style="text-align:center;font-size: 1rem">{% if order.date_shipped %}{{order.date_shipped.strftime('%Y-%m-%d')}}{% else %}Not shipped{% endif %}</td>
+                    <td style="text-align:center;font-weight:normal;font-size: 1rem">{{ order["user_name"] }}</td>
+                    <td style="text-align:center;font-weight:normal;font-size: 1rem">{{ order["user_username"] }}</td>
+                  </tr>
+                </table>
+                {% if order.notes %}
+                    <h2></h2>
+                    <h2></h2>
+                    <h4 style="color:red; text-align:center">Notes:</h4>
+                    <td style="text-align:center;font-weight:normal;font-size: 1rem">{{ order["notes"] }}</td>
+                {% endif %}
+            </div>
+        </div>
+    {% else %}
+        <div class="container position-relative text-center mx-auto mb-5 pb-0" style="margin-top: 10px; max-width: 600px;">
+            {% if error_msg %}
+                <h4 style="color:red;text-align:center">An error has occurred:</h4>
+                <h5 style="color:red;text-align:center">{{ error_msg }}</h5>
+            {% else %}
+                <h4 style="color:red;text-align:center">No order details were retrieved.</h4>
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <!-- Main Content End -->
+
+{% include "footer.html" %}

@@ -1,0 +1,79 @@
+{% include "header.html" %}
+{% from 'bootstrap5/form.html' import render_form %} <!-- INTRODUCES BOOTSTRAP-FLASK TO THE MIX -->
+
+    <!-- Page Header Start -->
+    <div class="container-fluid bg-dark bg-img p-5 mb-5">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="display-4 text-uppercase text-white">My Cart</h1>
+            </div>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+    <!-- Main Content Start -->
+    {% if msg_status or error_msg or record_to_delete %}
+        <div class="container position-relative text-center mx-auto mb-5 pb-0" style="margin-top: 10px; max-width: 800px;">
+            {% if error_msg %}
+                <h2 style="color:red;text-align:center">An error has occurred.</h2>
+                <h5 style="color:red;text-align:center">{{ error_msg }}</h5>
+                <a style="text-align:center;font-weight:bold;font-size: 1.25rem" href="{{ url_for('cart') }}">Return to Cart page</a>
+            {% endif %}
+            {% if record_to_delete %}
+                <h2 style="color:red; text-align:center">{{ trans_type }} the following cart detail?:</h2>
+                <table style="width: 100%; text-align:left; margin-left:auto; margin-right:auto">
+                  <colgroup>
+                      <col span="1" style="width: 46%;">
+                      <col span="1" style="width: 0%;">
+                      <col span="1" style="width: 20%;">
+                      <col span="1" style="width: 10%;">
+                      <col span="1" style="width: 12%;">
+                      <col span="1" style="width: 12%;">
+                  </colgroup>
+                  <tr style="border-bottom:1pt solid black">
+                    <th style="font-size: 1rem;font-weight:bold">Product Ordered</th>
+                    <th style="font-size: 1rem"></th>
+                    <th style="font-size: 1rem;font-weight:bold;text-align:right">Qty.</th>
+                    <th style="font-size: 1rem;font-weight:bold;text-align:center">UOM</th>
+                    <th style="font-size: 1rem;font-weight:bold;text-align:right">Unit Price</th>
+                    <th style="font-size: 1rem;font-weight:bold;text-align:right">Total Amt.</th>
+                  </tr>
+                  <tr style="border-bottom:1pt solid black">
+                    <td><img class="img-fluid" src="static/product_images/{{ record_to_delete.product_image }}" alt="" style="width: 80px; height: 50px;"> {{ record_to_delete.product_name }}</td>
+                    <td style="font-size: 1rem"></td>
+                    <td style="font-size: 1rem; text-align:right">{{ record_to_delete.qty_ordered }}</td>
+                    <td style="font-size: 1rem; text-align:center">{{ record_to_delete.uom_name }}</td>
+                    <td style="font-size: 1rem; text-align:right">{{ '${0:.2f}'.format(record_to_delete.unit_price) }}</td>
+                    <td style="font-size: 1rem; text-align:right">{{ '${0:.2f}'.format(record_to_delete.sales_amt) }}</td>
+                  </tr>
+                </table>
+                <a style="text-align:center;font-weight:bold;font-size: 1.25rem" href="{{ url_for('delete_cart_detail_result', cart_detail_id=record_to_delete.cart_detail_id) }}">Delete</a>
+                <br>
+                <a style="text-align:center;font-weight:bold;font-size: 1.25rem" href="{{ url_for('cart') }}">Cancel</a>
+            {% endif %}
+            {% if msg_status %}
+                <h2 style="color:red;text-align:center">{{ msg_status }}</h2>
+                {% if trans_type == "Checkout Successful": %}
+                    <a style="text-align:center;font-weight:bold;font-size: 1.25rem" href="{{ url_for('home') }}">Return to Home page</a>
+                {% else %}
+                    <a style="text-align:center;font-weight:bold;font-size: 1.25rem" href="{{ url_for('cart') }}">Return to Cart</a>
+                {% endif %}
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="container position-relative text-center mx-auto mb-5 pb-0" style="max-width: 800px;">
+            <div class="row justify-content-center">
+                <h2 style="color:red; text-align:center">{{ trans_type }} cart detail's information below:</h2>
+                <div class="col-lg-6">
+                    <div class="row g-3">
+                        <h5 style="color:black; text-align:left">{{ render_form(form) }}</h5>
+                        <a style="text-align:center;font-weight:bold;font-size: 1.25rem" href="{{ url_for('cart') }}">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Main Content End -->
+
+{% include "footer.html" %}

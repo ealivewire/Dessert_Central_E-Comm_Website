@@ -1,0 +1,43 @@
+{% include "header.html" %}
+{% from 'bootstrap5/form.html' import render_form %} <!-- INTRODUCES BOOTSTRAP-FLASK TO THE MIX -->
+
+    <!-- Page Header Start -->
+    <div class="container-fluid bg-dark bg-img p-5 mb-5">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h1 class="display-4 text-uppercase text-white">Log In</h1>
+            </div>
+        </div>
+    </div>
+    <!-- Page Header End -->
+
+    <!-- Main Content Start -->
+    {% if msg_status or error_msg %}
+        <div class="container position-relative text-center mx-auto mb-5 pb-0" style="margin-top: 10px; max-width: 600px;">
+            {% if error_msg %}
+                <h2 style="color:red;text-align:center">An error has occurred.</h2>
+                <h5 style="color:red;text-align:center">{{ error_msg }}</h5>
+                <a style="text-align:center;font-weight:bold;font-size: 1.25rem" href="{{ url_for('home') }}">Return to Home page</a>
+            {% endif %}
+            {% if msg_status %}
+                <h2 style="color:red;text-align:center">{{ msg_status }}</h2>
+                <a style="text-align:center;font-weight:bold;font-size: 1.25rem" href="{{ url_for('login') }}">Return to Login page</a>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="container position-relative text-center mx-auto mb-5 pb-0" style="max-width: 600px;">
+            <div class="row justify-content-center">
+                <h2 style="color:red; text-align:center">Enter login credentials below:</h2>
+                <div class="col-lg-6">
+                    <div class="row g-3">
+                        <h5 style="color:black; text-align:left">{{ render_form(form) }}</h5>
+                        <a style="text-align:center;font-weight:bold;font-size: 1.25rem" href="{{ url_for('home') }}">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- Main Content End -->
+
+{% include "footer.html" %}
