@@ -2830,7 +2830,9 @@ def get_cart_detail_count():
         cart_detail_count = 0
 
         # Get information on cart detail records in the database for user currently logged in.
-        # If no user is logged in, return a count of zero (via "AttributeError" exception handler below):
+        # If no user is logged in (which would trigger an attribute error since there would be
+        # no "current_user" as referenced below), return a count of zero (via "AttributeError"
+        # exception handler below):
         cart_details = retrieve_from_database("get_cart_details_by_user_id", user_id=current_user.id)
         if not(cart_details == {} or cart_details == []):
             cart_detail_count = len(cart_details)  # Record count of cart details in cart.
